@@ -32,7 +32,6 @@ sudo wget -P /usr/local/timelapser/ https://raw.githubusercontent.com/efeuentert
 sudo chmod +x /usr/local/timelapser/timelapser.sh
 ```
 
-
 9. run
 ```
 sudo ln -s /tmp/timelapse_short.mp4 /usr/local/vigiclient/timelapse_short.mp4
@@ -77,7 +76,7 @@ sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
    " tcp://127.0.0.1:VIDEOLOCALPORT"
   ]
 ```
-robot.json should then look something like this:  
+`robot.json` should then look something like this:  
 +pic
 
 13. restart the Vigibot client
@@ -86,12 +85,11 @@ robot.json should then look something like this:
   - add 2x `CAMERA` entries in hardware config and set `SOURCE` to the `CMDDIFFUSION` array index number of your entry. In the above screenshot that's `4` and `5`.
   - add 2x `COMMAND` entries in remote control config and set `CAMERA` to the created camera number. for me it was `5` and `6`.
 
-
-15. test it manually with:
+15. run the script manually with:
 ```
 sudo /usr/local/timelapser/timelapser.sh
 ```
-wait (takes 1-2min) and check Vigibot.
+wait until you get 2x "done" (1-2min), and confirm on Vigibot that it's working.
 
 16. start on boot: run `sudo nano /etc/rc.local` and add 
 ```
@@ -111,7 +109,7 @@ thanks to Pascal for some of the above instructions.
 
 it seems `enfuse` hdr images cause ffmpeg to fail. do not set `HDRBRACKETING`
 
-### manual cli commands:
+### for future reference: manual cli commands
 - use most recent images for short clip
 ```
 sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 /tmp/timelapse_short.mp4 -y
