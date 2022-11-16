@@ -1,4 +1,3 @@
-## timelapse-cam-raspberry-vigibot
 ## how to create timelapse videos with your robot
 Vigibot has the possibility to take photos regularly. the following script will regularly create a timelapse videos using the photos, the video can then be played directly from the Vigibot website.
 
