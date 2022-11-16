@@ -76,7 +76,7 @@ sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
   ]
 ```
 `robot.json` should then look something like this:  
-+pic
+![screenshot](/Screenshot_20221115_193205.jpg)
 
 13. restart the Vigibot client
 
