@@ -1,6 +1,7 @@
 ## how to create timelapse videos with your robot
-Vigibot has the possibility to take photos regularly. the following script will regularly create a timelapse videos using the photos, the video can then be played directly from the Vigibot website.  
-Note: if your camera has a motorized IR cut filter, only do step 5 and check if it clicks every minute when it's dark. this would wear out the motorized IR cut filter rather quickly. an option is to unplug the motorized IR cut filter connector on the camera module.
+Vigibot has the possibility to take photos regularly. the following script will regularly create timelapse videos using the photos, the video can then be played directly from the Vigibot website.  
+
+Note: if your camera has a motorized IR cut filter, only do step 5 and check if it clicks every minute when it's dark. this would wear out the motorized IR cut filter rather quickly. an option is to unplug the motorized IR cut filter connector on the camera module. if you have other ideas, let me know.
 
 1. login into your robot over ssh
 
@@ -107,7 +108,7 @@ edit `sudo nano /etc/rc.local` and replace with
 additional information / explanations:
 thanks to Pascal for some of the above instructions.
 
-it seems `enfuse` hdr images cause ffmpeg to fail. do not set `HDRBRACKETING`
+it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETING`
 
 ### for future reference: manual cli commands
 - use most recent images for short clip
