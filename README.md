@@ -111,12 +111,12 @@ thanks to Pascal for some of the above instructions.
 it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETING`
 
 ### for future reference: manual cli commands
-- use most recent images for short clip
+- use most recent images for short clip. takes about 10 seconds.
 ```
 sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 /tmp/timelapse_short.mp4 -y
 ```
 
-- long clip
+- long clip. takes about 90 seconds.
 ```
 sudo ffmpeg -sseof -52 -r 30 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -filter:v "setpts=0.5*PTS" -s 640x480 -vcodec libx264 /tmp/timelapse_long.mp4 -y
 ```
