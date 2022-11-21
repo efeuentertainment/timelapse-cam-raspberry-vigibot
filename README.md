@@ -3,6 +3,8 @@ Vigibot has the possibility to take photos regularly. the following script will 
 
 Note: if your camera has a motorized IR cut filter, only do step 5 and check if it clicks every minute when it's dark. this would wear out the motorized IR cut filter rather quickly. an option is to unplug the motorized IR cut filter connector on the camera module. if you have other ideas, let me know.
 
+Note: Snapshots taken are publicly accessible on https://vigibot.com/captures/
+
 1. login into your robot over ssh
 
 2. add a tmpfs entry, run:  
@@ -33,19 +35,31 @@ sudo wget -P /usr/local/timelapser/ https://raw.githubusercontent.com/efeuentert
 sudo chmod +x /usr/local/timelapser/timelapser.sh
 ```
 
-9. run
+9. run the script manually and leave it running
+```
+sudo /usr/local/timelapser/timelapser.sh
+```
+
+10. open a second ssh connection to your robot
+
+11. run
+```
+sudo ln -s /usr/bin/ffmpeg /usr/local/vigiclient/processdiffintro
+```
+
+12. run
 ```
 sudo ln -s /tmp/timelapse_short.mp4 /usr/local/vigiclient/timelapse_short.mp4
 ```
 
-10. run
+13. run
 ```
 sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
 ```
 
-11. copy the whole `CMDDIFFUSION` array from `/usr/local/vigiclient/sys.json` into your `/boot/robot.json` file. (if Vigibot pushes an update to `sys.json` you will have to manually update/re-copy the array.)
+14. copy the whole `CMDDIFFUSION` array from `/usr/local/vigiclient/sys.json` into your `/boot/robot.json` file. (if Vigibot pushes an update to `sys.json` you will have to manually update/re-copy the array.)
 
-12. add the 2 following entries to the copied `CMDDIFFUSION` array.
+15. add the 2 following entries to the copied `CMDDIFFUSION` array.
 ```
 ] , [
    "/usr/local/vigiclient/processdiffintro",
@@ -80,32 +94,21 @@ sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
 `robot.json` should then look something like this:  
 ![screenshot](/Screenshot_20221115_193205.jpg)
 
-13. restart the Vigibot client
+16. restart the Vigibot client
 
-14. add 2 new views:
-  - add 2x `CAMERA` entries in hardware config and set `SOURCE` to the `CMDDIFFUSION` array index number of your entry. In the above screenshot that's `4` and `5`.
+17. add 2 new views:
+  - add 2x `CAMERA` entries in hardware config and set `SOURCE` to the `CMDDIFFUSION` array index number of your entry. In the above screenshot that's array index number `4` and `5`. For the moment, it will probably be 8 and 9 for you.
   - add 2x `COMMAND` entries in remote control config and set `CAMERA` to the created camera number. for me it was `5` and `6`.
 
-15. run the script manually with:
+18. start on boot: run `sudo nano /etc/rc.local` and add 
 ```
-sudo /usr/local/timelapser/timelapser.sh
-```
-wait until you get 2x "done" (1-2min), and confirm on Vigibot that it's working.
+/usr/local/timelapser/timelapser.sh > /dev/tty0 &
 
-16. start on boot: run `sudo nano /etc/rc.local` and add 
-```
-/usr/local/timelapser/timelapser.sh &
 ```
 above the line `exit 0`
 
 
-### OPTIONAL: display on framebuffer:
-edit `sudo nano /etc/rc.local` and replace with 
-```
-/usr/local/timelapser/timelapser.sh >/dev/tty0 &
-```
-
-additional information / explanations:
+### additional information / explanations:
 thanks to Pascal for some of the above instructions.
 
 it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETING`
