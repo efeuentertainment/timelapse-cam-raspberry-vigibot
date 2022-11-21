@@ -1,9 +1,14 @@
 #!/bin/bash
 dir=/home/pi/timelapse/
+
+if [ "$(id -u)" != "0" ]; then
+  echo "Please run as root"
+  exit 1
+fi
+
 if [ ! -d $dir ]; then
   mkdir $dir
 fi
-
 echo "current $dir file count: $(ls -1 $dir | wc -l). ready"
 
 while true
@@ -24,8 +29,7 @@ do
       if [[ ! -f /tmp/timelapse_short.mp4 || $(find /tmp/timelapse_short.mp4 -mmin +5) ]]; then
 	#date
 	echo "creating timelapse_short.mp4 ..."
-	ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 /tmp/timelapse_short.mp4 -y >/dev/null 2>&1
-	echo "timelapse_short.mp4 done!"
+	ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 /tmp/timelapse_short.mp4 -y >/dev/null 2>&1 && echo "timelapse_short.mp4 done!" &
       fi
 
       if [[ ! -f /tmp/timelapse_long.mp4 || $(find /tmp/timelapse_long.mp4 -mmin +30) ]]; then
