@@ -3,8 +3,6 @@ Vigibot has the possibility to take photos regularly. the following script will 
 
 Note: if your camera has a motorized IR cut filter, only do step 5 and check if it clicks every minute when it's dark. this would wear out the motorized IR cut filter rather quickly. an option is to unplug the motorized IR cut filter connector on the camera module. if you have other ideas, let me know.
 
-Note: Snapshots taken are publicly accessible on https://vigibot.com/captures/
-
 1. login into your robot over ssh
 
 2. add a tmpfs entry, run:  
@@ -18,7 +16,8 @@ tmpfs /tmp tmpfs defaults,noatime, nosuid,size=20m 0 0
 
 4. run `df` and make sure there's a `/tmp` entry.
 
-5. In hardware config set `SNAPSHOTSINTERVAL` to `1` to take a photo every 1 minute.
+5. In hardware config set `SNAPSHOTSINTERVAL` to `1` to take a photo every 1 minute.  
+Note: Snapshots are publicly accessible on https://vigibot.com/captures/
 
 6. create folder
 ```
@@ -100,12 +99,11 @@ sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
   - add 2x `CAMERA` entries in hardware config and set `SOURCE` to the `CMDDIFFUSION` array index number of your entry. In the above screenshot that's array index number `4` and `5`. For the moment, it will probably be 8 and 9 for you.
   - add 2x `COMMAND` entries in remote control config and set `CAMERA` to the created camera number. for me it was `5` and `6`.
 
-18. check if it's working on vigibot
+18. run `ls -l /tmp/`, check if `timelapse_short.mp4` and `timelapse_long.mp4` exist and check if it's working on vigibot.
 
-19. start on boot: run `sudo nano /etc/rc.local` and add 
+19. if it works, automatically start it on boot: run `sudo nano /etc/rc.local` and add 
 ```
 /usr/local/timelapser/timelapser.sh > /dev/tty0 &
-
 ```
 above the line `exit 0`
 
@@ -118,7 +116,7 @@ it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETIN
 ### for future reference: manual cli commands
 - use most recent images for short clip. takes about 10 seconds.
 ```
-sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 /tmp/timelapse_short.mp4 -y
+sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 -filter:v fps=fps=30/tmp/timelapse_short.mp4 -y
 ```
 
 - long clip. takes about 90 seconds.
