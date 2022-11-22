@@ -35,7 +35,7 @@ do
       if [[ ! -f /tmp/timelapse_short.mp4 || $(find /tmp/timelapse_short.mp4 -mmin +5) ]]; then
 	#date
 	echo "creating timelapse_short.mp4 ..."
-	ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 /tmp/timelapse_short.mp4 -y >/dev/null 2>&1
+	ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 -filter:v fps=fps=30 /tmp/timelapse_short.mp4 -y >/dev/null 2>&1
 	echo "timelapse_short.mp4 done!"
       fi
 

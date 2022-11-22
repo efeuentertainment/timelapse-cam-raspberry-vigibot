@@ -100,7 +100,9 @@ sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
   - add 2x `CAMERA` entries in hardware config and set `SOURCE` to the `CMDDIFFUSION` array index number of your entry. In the above screenshot that's array index number `4` and `5`. For the moment, it will probably be 8 and 9 for you.
   - add 2x `COMMAND` entries in remote control config and set `CAMERA` to the created camera number. for me it was `5` and `6`.
 
-18. start on boot: run `sudo nano /etc/rc.local` and add 
+18. check if it's working on vigibot
+
+19. start on boot: run `sudo nano /etc/rc.local` and add 
 ```
 /usr/local/timelapser/timelapser.sh > /dev/tty0 &
 
