@@ -91,17 +91,19 @@ sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
   ]
 ```
 `robot.json` should then look something like this:  
-![screenshot](/Screenshot_20221115_193205.jpg)
+![robot.json](/Screenshot_20221122_111634.jpg)
 
 16. restart the Vigibot client
 
-17. add 2 new views:
-  - add 2x `CAMERA` entries in hardware config and set `SOURCE` to the `CMDDIFFUSION` array index number of your entry. In the above screenshot that's array index number `4` and `5`. For the moment, it will probably be 8 and 9 for you.
-  - add 2x `COMMAND` entries in remote control config and set `CAMERA` to the created camera number. for me it was `5` and `6`.
+17. add 2x `CAMERA` entries in hardware config and set `SOURCE` to the `CMDDIFFUSION` array index number of your entry. In the above screenshot that's array index number `8` and `9`.
+![config_hw](/IMG_20221122_112140_e.png)
 
-18. run `ls -l /tmp/`, check if `timelapse_short.mp4` and `timelapse_long.mp4` exist and check if it's working on vigibot.
+18. add 2x `COMMAND` entries in remote control config and set `CAMERA` to the created camera number. for me it was `5` and `6`.
+![config_rc](/Screenshot_20221122_111407_com.opera.browser.jpg)
 
-19. if it works, automatically start it on boot: run `sudo nano /etc/rc.local` and add 
+19. run `ls -l /tmp/`, check if `timelapse_short.mp4` and `timelapse_long.mp4` exist and check if it's working on vigibot.
+
+20. if it works, automatically start it on boot: run `sudo nano /etc/rc.local` and add 
 ```
 /usr/local/timelapser/timelapser.sh > /dev/tty0 &
 ```
