@@ -1,4 +1,8 @@
 #!/bin/bash
+#created by firened
+#guide on GitHub: https://github.com/efeuentertainment/timelapse-cam-raspberry-vigibot
+
+#path to where photos shall be stored
 dir=/home/pi/timelapse/
 
 if [ "$(id -u)" != "0" ]; then
@@ -6,22 +10,27 @@ if [ "$(id -u)" != "0" ]; then
   exit 1
 fi
 
+#create dir
 if [ ! -d $dir ]; then
   mkdir $dir
 fi
+
 echo "current $dir file count: $(ls -1 $dir | wc -l). waiting for snapshots (robot must be asleep)"
 
 while true
 do
+  #wait until new snapshot is detected
   until [ -f /tmp/out.jpg ]
   do
     sleep 9
   done
-
+  
+  #throw error if HDR files are detected, they stop ffmpeg, perhaps because the HDR processing may no be done yet, resulting in corrupt files.
   if [[ -f /tmp/1.jpg || -f /tmp/2.jpg || -f /tmp/3.jpg ]]; then
     echo "found hints of HDR pictures. set hw config -> EXPOSUREBRACKETING to 0 and delete /tmp/*.jpg (or reboot). discarding snapshot..."
     rm /tmp/out.jpg
   else
+
     mv /tmp/out.jpg "$dir $(date +%Y%m%d_%H%M%S_%3N)".jpg
     find "$dir" -mtime +1 -delete
 
