@@ -118,9 +118,9 @@ it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETIN
 ### for future reference: manual cli commands
 - use most recent images for short clip. takes about 10 seconds to create.
 ```
-        #calculated length: 48min in 4.8s playback
+        #target length: 1h in 6s playback
         #'-sseof 2': use only most recent 2 seconds of input
-        #ffmpeg seems to assume 24fps resulting in 48 input frames
+        #ffmpeg may be assuming a different fps value in its -sseof calculation
         #'-r 10': set conversion to 10 fps
         #'-filter:v fps=fps=30': force 30 fps output so thr 30 fps vigibot captures work
 ```
@@ -130,9 +130,9 @@ sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 
 
 - long clip. takes about 90 seconds to create.
 ```
-        #calculated length: 20.8h in 41.6s playback
+        #target length: 24h in 40s playback
         #"-sseof 52": use only most recent 52 seconds of input
-        #ffmpeg seems to assume 24fps resulting in 1248 input frames
+        #ffmpeg may be assuming a different fps value in its -sseof calculation
         #'-r 30': set conversion to 30 fps
         #'-filter:v "setpts=0.5*PTS"': only pass 50% of the frames, drop the others. this halves timelapse_long playback duration. (e.g. '0.2' would only pass 20% of the frames).
 ```
