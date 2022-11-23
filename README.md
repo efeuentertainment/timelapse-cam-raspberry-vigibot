@@ -116,10 +116,11 @@ thanks to Pascal for some of the above instructions.
 it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETING`
 
 ### for future reference: manual cli commands
-- use most recent images for short clip. takes about 10 seconds.
+- use most recent images for short clip. takes about 10 seconds to create.
 ```
         #calculated length: 48min in 4.8s playback
-        #'-sseof 2': use only most recent 2 seconds of input        #ffmpeg seems to assume 24fps resulting in 48 input frames
+        #'-sseof 2': use only most recent 2 seconds of input
+        #ffmpeg seems to assume 24fps resulting in 48 input frames
         #'-r 10': set conversion to 10 fps
         #'-filter:v fps=fps=30': force 30 fps output so thr 30 fps vigibot captures work
 ```
@@ -127,7 +128,7 @@ it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETIN
 sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 -filter:v fps=fps=30/tmp/timelapse_short.mp4 -y
 ```
 
-- long clip. takes about 90 seconds.
+- long clip. takes about 90 seconds to create.
 ```
         #calculated length: 20.8h in 41.6s playback
         #"-sseof 52": use only most recent 52 seconds of input
@@ -139,5 +140,5 @@ sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 
 sudo ffmpeg -sseof -52 -r 30 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -filter:v "setpts=0.5*PTS" -s 640x480 -vcodec libx264 /tmp/timelapse_long.mp4 -y
 ```
 
-find the same guide on GitHub: 
+find this guide on GitHub: 
 https://github.com/efeuentertainment/timelapse-cam-raspberry-vigibot
