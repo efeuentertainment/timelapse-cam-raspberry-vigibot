@@ -91,15 +91,15 @@ sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
   ]
 ```
 `robot.json` should then look something like this:  
-![robot.json](/Screenshot_20221122_111634.jpg)
+![robot.json](https://github.com/efeuentertainment/timelapse-cam-raspberry-vigibot/blob/main/Screenshot_20221122_111634.jpg)
 
 16. restart the Vigibot client
 
 17. add 2x `CAMERA` entries in hardware config and set `SOURCE` to the `CMDDIFFUSION` array index number of your entry. In the above screenshot that's array index number `8` and `9`.
-![config_hw](/IMG_20221122_112140_e.png)
+![config_hw](https://github.com/efeuentertainment/timelapse-cam-raspberry-vigibot/blob/main/IMG_20221122_112140_e.png)
 
 18. add 2x `COMMAND` entries in remote control config and set `CAMERA` to the created camera number. for me it was `5` and `6`.
-![config_rc](/Screenshot_20221122_111407_com.opera.browser.jpg)
+![config_rc](https://github.com/efeuentertainment/timelapse-cam-raspberry-vigibot/blob/main/Screenshot_20221122_111407_com.opera.browser.jpg)
 
 19. run `ls -l /tmp/`, check if `timelapse_short.mp4` and `timelapse_long.mp4` exist and check if it's working on vigibot.
 
