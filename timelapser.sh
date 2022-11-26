@@ -1,5 +1,5 @@
 #!/bin/bash
-#created by firened
+#created on briecam by firened
 #guide on GitHub: https://github.com/efeuentertainment/timelapse-cam-raspberry-vigibot
 
 #path to where photos shall be stored
