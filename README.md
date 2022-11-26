@@ -142,3 +142,5 @@ sudo ffmpeg -sseof -52 -r 30 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -f
 
 find this guide on GitHub: 
 https://github.com/efeuentertainment/timelapse-cam-raspberry-vigibot
+
+#written on briecam by firened
