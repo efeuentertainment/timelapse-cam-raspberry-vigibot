@@ -1,8 +1,6 @@
 ## how to create timelapse videos with your robot
 Vigibot has the possibility to take photos regularly. the following script will regularly create timelapse videos using the photos, the video can then be played directly from the Vigibot website.  
 
-Note: if your camera has a motorized IR cut filter, only do step 5 and check if it clicks every minute when it's dark. this would wear out the motorized IR cut filter rather quickly. an option is to unplug the motorized IR cut filter connector on the camera module. if you have other ideas, let me know.
-
 1. login into your robot over ssh
 
 2. add a tmpfs entry, run:  
@@ -114,6 +112,10 @@ sudo ln -s /tmp/timelapse_long.mp4 /usr/local/vigiclient/timelapse_long.mp4
 thanks to Pascal for some of the above instructions.
 
 it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETING`
+
+If your camera has a motorized IR cut filter and you use a long camera flex cable or your power supply is on the weaker side, it's possible the fipter will click every minute when taking a snapshot, to check: only do step 5 and check if it clicks every minute when it's dark. this would wear out the motorized IR cut filter rather quickly. Options are to either add a capacitor (10uF or more) to the camera module 3.3V contacts, or to unplug the motorized IR cut filter connector on the camera module.
+
+it appears that if the power supply is on the weaker side rsp. the battery is very low, such can be the case on briecam, that the timelapse_long.mp4 creation (which takes 2min at 100% cpu load) may cause a power failure and crash the pi, only for it to reboot and do it again in a loop.
 
 ### for future reference: manual cli commands
 - use most recent images for short clip. takes about 10 seconds to create.
