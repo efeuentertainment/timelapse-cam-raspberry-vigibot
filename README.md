@@ -113,7 +113,10 @@ thanks to Pascal for some of the above instructions.
 
 it seems `enfuse` hdr images cause ffmpeg to fail. do not set `EXPOSUREBRACKETING`
 
-If your camera has a motorized IR cut filter and you use a long camera flex cable or your power supply is on the weaker side, it's possible the fipter will click every minute when taking a snapshot, to check: only do step 5 and check if it clicks every minute when it's dark. this would wear out the motorized IR cut filter rather quickly. Options are to either add a capacitor (10uF or more) to the camera module 3.3V contacts, or to unplug the motorized IR cut filter connector on the camera module.
+If your camera has a motorized IR cut filter and you use a long camera flex cable or your power supply is on the weaker side,
+it's possible the filter will click every minute when taking a snapshot, to check: only do step 5 and check if it clicks every minute when it's dark.
+this would wear out the motorized IR cut filter rather quickly.
+Options are to either add a capacitor (470uF or more, 3.3V or more) to the camera module's 3.3V contacts, or to unplug the motorized IR cut filter connector on the camera module.
 
 it appears that if the power supply is on the weaker side rsp. the battery is very low, such can be the case on briecam, that the timelapse_long.mp4 creation (which takes 2min at 100% cpu load) may cause a power failure and crash the pi, only for it to reboot and do it again in a loop.
 
