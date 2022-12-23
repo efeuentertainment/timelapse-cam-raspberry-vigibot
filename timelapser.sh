@@ -32,7 +32,7 @@ do
     rm /tmp/out.jpg
   else
 
-    #rename new snapshot to current timestamp and delete pjotos older than 1 day (48h)
+    #rename new snapshot to current timestamp and delete photos older than 1 day (48h)
     mv /tmp/out.jpg "$dir $(date +%Y%m%d_%H%M%S_%3N)".jpg
     find "$dir" -mtime +1 -delete
 
@@ -44,30 +44,36 @@ do
     if [ $(ls -1 $dir | wc -l) -lt 10 ]; then
       echo "holding off creation until at least 10 frames are present."
     else
+      
+      #skip creation if uptime is less than 2 hours on briecam
+      #reason: 100% CPU use on low battery may crash briecam
+      if [[ $(cat /proc/uptime | awk '{print int($1)}') -lt 7200 ]] && [[ hostname -eq "briecam" ]]; then
+        echo "holding off creation until uptime is larger than 2 hours."
+      else
+	#create timelapse_short every 5 min.
+	if [[ ! -f /tmp/timelapse_short.mp4 || $(find /tmp/timelapse_short.mp4 -mmin +5) ]]; then
+	  echo "creating timelapse_short.mp4 ..."
+	  #target length: 1h in 6s playback
+	  #'-sseof 2': use only most recent 2 seconds of input
+	  #ffmpeg may be assuming a different fps value in its -sseof calculation
+	  #'-r 10': set conversion to 10 fps
+	  #'-filter:v fps=fps=30': force 30 fps output so thr 30 fps vigibot captures work
+	  ffmpeg -sseof -2 -r 10 -pattern_type glob -i "$dir*.jpg" -s 640x480 -vcodec libx264 -filter:v fps=fps=30 /tmp/timelapse_short.mp4 -y >/dev/null 2>&1
+	  echo "timelapse_short.mp4 done!"
+	fi
 
-      #create timelapse_short every 5 min.
-      if [[ ! -f /tmp/timelapse_short.mp4 || $(find /tmp/timelapse_short.mp4 -mmin +5) ]]; then
-	echo "creating timelapse_short.mp4 ..."
-        #target length: 1h in 6s playback
-	#'-sseof 2': use only most recent 2 seconds of input
-	#ffmpeg may be assuming a different fps value in its -sseof calculation
-        #'-r 10': set conversion to 10 fps
-	#'-filter:v fps=fps=30': force 30 fps output so thr 30 fps vigibot captures work
-	ffmpeg -sseof -2 -r 10 -pattern_type glob -i "$dir*.jpg" -s 640x480 -vcodec libx264 -filter:v fps=fps=30 /tmp/timelapse_short.mp4 -y >/dev/null 2>&1
-	echo "timelapse_short.mp4 done!"
-      fi
-
-      #create timelapse_long every 30 min
-      if [[ ! -f /tmp/timelapse_long.mp4 || $(find /tmp/timelapse_long.mp4 -mmin +30) ]]; then
-	date
-	echo "creating timelapse_long.mp4 ..."
-        #target length: about 24h in 40s playback
-	#"-sseof 52": use only most recent 52 seconds of input
-	#ffmpeg may be assuming a different fps value in its -sseof calculation
-        #'-r 30': set conversion to 30 fps
-	#'-filter:v "setpts=0.5*PTS"': only pass 50% of the frames, drop the others. this halves timelapse_long playback duration. (e.g. '0.2' would only pass 20% of the frames).
-	ffmpeg -sseof -52 -r 30 -pattern_type glob -i "$dir*.jpg" -filter:v "setpts=0.5*PTS" -s 640x480 -vcodec libx264 /tmp/timelapse_long.mp4 -y >/dev/null 2>&1
-	echo "timelapse_long.mp4 done!"
+	#create timelapse_long every 30 min
+	if [[ ! -f /tmp/timelapse_long.mp4 || $(find /tmp/timelapse_long.mp4 -mmin +30) ]]; then
+	  date
+	  echo "creating timelapse_long.mp4 ..."
+	  #target length: about 24h in 40s playback
+	  #"-sseof 52": use only most recent 52 seconds of input
+	  #ffmpeg may be assuming a different fps value in its -sseof calculation
+	  #'-r 30': set conversion to 30 fps
+	  #'-filter:v "setpts=0.5*PTS"': only pass 50% of the frames, drop the others. this halves timelapse_long playback duration. (e.g. '0.2' would only pass 20% of the frames).
+	  ffmpeg -sseof -52 -r 30 -pattern_type glob -i "$dir*.jpg" -filter:v "setpts=0.5*PTS" -s 640x480 -vcodec libx264 /tmp/timelapse_long.mp4 -y >/dev/null 2>&1
+	  echo "timelapse_long.mp4 done!"
+	fi
       fi
     fi
   fi
