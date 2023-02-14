@@ -32,9 +32,9 @@ do
     rm /tmp/out.jpg
   else
 
-    #rename new snapshot to current timestamp and delete photos older than 1 day (48h)
+    #rename new snapshot to current timestamp and delete photos older than 7 days
     mv /tmp/out.jpg "$dir $(date +%Y%m%d_%H%M%S_%3N)".jpg
-    find "$dir" -mtime +1 -delete
+    find "$dir" -mtime +7 -delete
 
     #print info below 61 photos.
     if [ $(ls -1 $dir | wc -l) -lt 61 ]; then

@@ -130,7 +130,7 @@ it appears that if the power supply is on the weaker side rsp. the battery is ve
         #'-filter:v fps=fps=30': force 30 fps output so thr 30 fps vigibot captures work
 ```
 ```
-sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 -filter:v fps=fps=30/tmp/timelapse_short.mp4 -y
+sudo ffmpeg -sseof -2 -r 10 -pattern_type glob -i "/home/pi/timelapse/*.jpg" -s 640x480 -vcodec libx264 -filter:v fps=fps=30 /tmp/timelapse_short.mp4 -y
 ```
 
 - long clip. takes about 90 seconds to create.
